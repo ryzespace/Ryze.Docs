@@ -1,0 +1,75 @@
+@startuml
+title Ryze Build Pipeline – End-to-End Build & Provenance Flow
+
+!include ../../../colors.puml
+
+|Developer|
+
+start
+
+:<color:#58a6ff>**git push**</color>
+<color:#58a6ff>**pull request**</color>;
+
+|Source Control|
+
+:GitHub Repository;
+
+:Source Code
+<color:#8b949e>.cs | .csproj</color>;
+
+:Workflows
+<color:#8b949e>.yml</color>;
+
+|CI/CD Pipeline|
+
+:Checkout
+<color:#8b949e>@commit SHA</color>;
+
+note right
+  <size:14><color:#58a6ff>**GitHub Actions**</color></size>
+end note
+
+:SDK Setup
+<color:#8b949e>.NET | Java</color>;
+
+fork
+  :Restore
+  Dependencies;
+fork again
+  :Compile
+  Release Config;
+end fork
+
+:Publish Artifacts;
+
+|Supply Chain Security|
+
+:Provenance Generator
+<color:#8b949e>(SLSA v0.2)</color>;
+
+note right
+  <size:14><color:#58a6ff>**SLSA Framework**</color></size>
+  ====
+  **Captures:**
+  • Source commit SHA
+  • Dependencies (lock files)
+  • Build commands
+  • Output hashes
+end note
+
+:Sigstore
+<color:#8b949e>Fulcio | Rekor</color>;
+
+note right
+  **Keyless signing using**
+  **GitHub OIDC tokens**
+end note
+
+|Artifacts & Attestation|
+
+:Runtime Binaries;
+
+:Signed Attestation
+<color:#8b949e>.jsonl</color>;
+stop
+@enduml

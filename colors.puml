@@ -1,0 +1,90 @@
+!define BG_COLOR #0d1117
+!define FG_COLOR #e6edf3
+!define ACCENT_COLOR #58a6ff
+!define COMPONENT_BG #161b22
+!define COMPONENT_BORDER #30363d
+!define NOTE_BG #1c2128
+!define NOTE_BORDER #388bfd
+
+skinparam backgroundColor BG_COLOR
+skinparam defaultFontColor FG_COLOR
+skinparam ArrowColor ACCENT_COLOR
+skinparam ArrowThickness 2
+skinparam Shadowing false
+
+skinparam ActorBorderColor ACCENT_COLOR
+skinparam ActorBackgroundColor COMPONENT_BG
+skinparam ActorFontColor FG_COLOR
+
+skinparam ComponentBorderColor COMPONENT_BORDER
+skinparam ComponentBackgroundColor COMPONENT_BG
+skinparam ComponentFontColor FG_COLOR
+skinparam ComponentStyle rectangle
+
+skinparam PackageBorderColor COMPONENT_BORDER
+skinparam PackageBackgroundColor BG_COLOR
+skinparam PackageFontColor ACCENT_COLOR
+skinparam PackageFontSize 14
+skinparam PackageFontStyle bold
+
+skinparam NoteBorderColor NOTE_BORDER
+skinparam NoteBackgroundColor NOTE_BG
+skinparam NoteFontColor FG_COLOR
+
+skinparam activityBackgroundColor COMPONENT_BG
+skinparam activityBorderColor COMPONENT_BORDER
+skinparam activityFontColor FG_COLOR
+skinparam activityDiamondBackgroundColor COMPONENT_BG
+skinparam activityDiamondBorderColor COMPONENT_BORDER
+skinparam activityDiamondFontColor FG_COLOR
+skinparam activityArrowColor ACCENT_COLOR
+skinparam activityBarColor ACCENT_COLOR
+
+skinparam partitionBackgroundColor COMPONENT_BG
+skinparam partitionBorderColor COMPONENT_BORDER
+skinparam partitionFontColor ACCENT_COLOR
+skinparam partitionBorderThickness 2
+
+skinparam swimlaneBorderColor COMPONENT_BORDER
+skinparam swimlaneTitleFontColor ACCENT_COLOR
+skinparam swimlaneBorderThickness 2
+
+skinparam activityFontSize 13
+skinparam activityArrowFontSize 11
+skinparam noteFontSize 12
+skinparam titleFontSize 16
+
+skinparam activity {
+  BackgroundColor #1c2128
+  BorderColor #30363d
+  FontColor #e6edf3
+  DiamondBackgroundColor #1c2128
+  DiamondBorderColor #30363d
+  DiamondFontColor #e6edf3
+  ArrowColor #58a6ff
+  ArrowFontColor #e6edf3
+  BarColor #58a6ff
+}
+
+skinparam note {
+  BackgroundColor #161b22
+  BorderColor #30363d
+  FontColor #8b949e
+}
+
+skinparam partition {
+  BackgroundColor #161b22
+  BorderColor #30363d
+  FontColor #58a6ff
+  BorderThickness 2
+}
+
+skinparam swimlane {
+  BorderColor #30363d
+  TitleFontColor #58a6ff
+  BorderThickness 2
+  TitleFontSize 14
+}
+
+skinparam Padding 2
+skinparam BoxPadding 10

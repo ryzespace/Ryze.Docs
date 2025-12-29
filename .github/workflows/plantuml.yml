@@ -1,0 +1,83 @@
+name: Generate PlantUML Diagrams
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.puml'
+  pull_request:
+    paths:
+      - '**/*.puml'
+
+jobs:
+  generate-diagrams:
+    runs-on: ubuntu-latest
+    outputs:
+      artifact-name: diagrams
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install PlantUML & Graphviz
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq plantuml graphviz
+
+      - name: Generate diagrams
+        run: |
+          all_files=$(find . -name '*.puml' ! -name 'colors.puml')
+          for file in $all_files; do
+              echo "Generating SVG for $file"
+              plantuml -tsvg "$file"
+          done
+
+      - name: Upload generated diagrams
+        uses: actions/upload-artifact@v6
+        with:
+          name: diagrams
+          path: '**/*.svg'
+          if-no-files-found: error
+
+  commit-pr:
+    runs-on: ubuntu-latest
+    needs: generate-diagrams
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Download generated diagrams
+        uses: actions/download-artifact@v7
+        with:
+          name: diagrams
+          path: diagrams
+
+      - name: Commit & Push generated SVGs
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B generated-diagrams
+          git add diagrams/**/*.svg
+          git diff --cached --quiet || git commit -m "chore: update generated PlantUML SVGs"
+          git push --force origin generated-diagrams
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    
+      
+      - name: Create PR
+        run: |
+          PR_EXISTS=$(gh pr list --head generated-diagrams --json number --jq '.[0].number')
+          if [ -z "$PR_EXISTS" ]; then
+            gh pr create --title "Update generated PlantUML SVGs" --body "Generated PlantUML diagrams updated." --base main --head generated-diagrams
+          else
+            echo "PR already exists: $PR_EXISTS"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
